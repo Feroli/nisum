@@ -1,5 +1,6 @@
 package com.evaluacion.nisum.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,10 @@ public class Phone {
     private Long id;
 
     private String number;
+
+    @JsonProperty("citycode")
     private String cityCode;
+
+    @JsonProperty("contrycode")
     private String countryCode;
 }

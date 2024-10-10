@@ -7,7 +7,6 @@ import com.evaluacion.nisum.repository.UserRepository;
 import com.evaluacion.nisum.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,7 +17,6 @@ public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
     private final ValidationService validationService;
     private final JwtUtil jwtUtil;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse registerUser(UserRequest userRequest) {
@@ -32,7 +30,7 @@ public class DefaultUserService implements UserService {
         User user = User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
-                .password((passwordEncoder.encode(userRequest.getPassword())))
+                .password(userRequest.getPassword())
                 .token(jwtUtil.generateToken(userRequest.getName()))
                 .phones(userRequest.getPhones())
                 .build();

@@ -31,11 +31,12 @@ public class UserServiceTest {
     void shouldRegisterUserSuccessfully() {
         User testUser = ModelGenerator.generateUser(1);
 
-        UserRequest userRequest = new UserRequest();
-        userRequest.setName(testUser.getName());
-        userRequest.setEmail(testUser.getEmail());
-        userRequest.setPassword("Password123");
-        userRequest.setPhones(testUser.getPhones());
+        UserRequest userRequest = UserRequest.builder()
+                .name(testUser.getName())
+                .email(testUser.getEmail())
+                .password("Password123")
+                .phones(testUser.getPhones())
+                .build();
 
         UserResponse userResponse = userService.registerUser(userRequest);
 
@@ -50,15 +51,18 @@ public class UserServiceTest {
         User userInDb = userRepository.findByEmail(userRequest.getEmail()).orElse(null);
         assertThat(userInDb).isNotNull();
         assertThat(userInDb.getEmail()).isEqualTo(userRequest.getEmail());
+        assertThat(userInDb.getPhones()).usingRecursiveAssertion().isNotNull();
     }
 
     @Test
     @DisplayName("Debería lanzar ValidationException si el email es inválido")
     void shouldThrowValidationExceptionWhenEmailIsInvalid() {
-        UserRequest userRequest = new UserRequest();
-        userRequest.setPassword("Password123");
-        userRequest.setEmail("invalid-email");
-        userRequest.setPhones(ModelGenerator.generatePhones(1));
+        UserRequest userRequest = UserRequest.builder()
+                .password("Password123")
+                .email("invalid-email")
+                .phones(ModelGenerator.generatePhones(1))
+                .build();
+
 
         assertThatThrownBy(() -> userService.registerUser(userRequest))
                 .isInstanceOf(ValidationException.class)
@@ -71,11 +75,12 @@ public class UserServiceTest {
         User existingUser = ModelGenerator.generateUser(1);
         userRepository.save(existingUser);
 
-        UserRequest userRequest = new UserRequest();
-        userRequest.setName(existingUser.getName());
-        userRequest.setEmail(existingUser.getEmail());
-        userRequest.setPassword("Password123");
-        userRequest.setPhones(existingUser.getPhones());
+        UserRequest userRequest = UserRequest.builder()
+                .name(existingUser.getName())
+                .email(existingUser.getEmail())
+                .password("Password123")
+                .phones(existingUser.getPhones())
+                .build();
 
         assertThatThrownBy(() -> userService.registerUser(userRequest))
                 .isInstanceOf(ResponseStatusException.class)
@@ -87,11 +92,11 @@ public class UserServiceTest {
     @Test
     @DisplayName("Debería lanzar ValidationException si la contraseña es inválida")
     void shouldThrowValidationExceptionWhenPasswordIsInvalid() {
-        UserRequest userRequest = new UserRequest();
-        userRequest.setPassword("");
-        userRequest.setName("Fer");
-        userRequest.setEmail("fer@sample.com");
-        userRequest.setPhones(ModelGenerator.generatePhones(1));
+        UserRequest userRequest = UserRequest.builder()
+                .password("pass")
+                .name("Fer")
+                .email("fer@sample.com")
+                .phones(ModelGenerator.generatePhones(1)).build();
 
         assertThatThrownBy(() -> userService.registerUser(userRequest))
                 .isInstanceOf(ValidationException.class)

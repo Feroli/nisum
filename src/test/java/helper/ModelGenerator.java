@@ -35,7 +35,7 @@ public class ModelGenerator {
                 .lastLogin(LocalDateTime.now())
                 .token("some-jwt-token-" + index)
                 .isActive(true)
-                .phones(generatePhones(2)) // Genera 2 teléfonos por usuario
+                .phones(generatePhones(2))
                 .build();
     }
 

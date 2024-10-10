@@ -1,6 +1,6 @@
 spring:
   application:
-    name: your-application-name
+    name: nisum
 
 validation:
   email:
