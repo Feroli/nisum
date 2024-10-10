@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: nisum
+
+validation:
+  email:
+    regex: "^[\\w!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+  password:
+    regex: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$'
+
+logging:
+  level:
+    root: INFO

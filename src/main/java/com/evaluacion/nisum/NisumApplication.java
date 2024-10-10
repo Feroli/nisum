@@ -9,5 +9,4 @@ public class NisumApplication {
     public static void main(String[] args) {
         SpringApplication.run(NisumApplication.class, args);
     }
-
 }
